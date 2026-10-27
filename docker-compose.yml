@@ -1,0 +1,9 @@
+services:
+  pipeline:
+    build: .
+    image: internacoes-sus-pe
+    volumes:
+      - .:/app
+    environment:
+      ANO: "${ANO:-2024}"
+      UF: "${UF:-PE}"

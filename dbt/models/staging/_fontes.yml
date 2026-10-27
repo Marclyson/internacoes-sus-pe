@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: silver
+    description: Camada silver gerada pelo Spark (spark/silver.py)
+    meta:
+      external_location: "../dados/silver/{name}/**/*.parquet"
+    tables:
+      - name: internacoes
+        description: Uma linha por AIH do SIH/SUS, já sem reapresentações
+      - name: procedimentos
+        description: Tabela de procedimentos do SUS (SIGTAP)
+      - name: diagnosticos
+        description: CID-10 por subcategoria e categoria
+      - name: municipios
+        description: Municípios do IBGE
+      - name: estabelecimentos
+        description: Estabelecimentos de saúde do CNES
