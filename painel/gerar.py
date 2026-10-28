@@ -58,17 +58,17 @@ def recorte(filtro, params):
     capitulos = linhas(f"""
         select coalesce(capitulo, 'Sem classificação') as nome, any_value(num_capitulo) as num,
                count(*) as n, 100.0 * avg(obito::int) as mortalidade
-        from base {where} group by 1 order by 3 desc limit 10""", params)
+        from base {where} group by 1 order by 3 desc, 1 limit 10""", params)
     procedimentos = linhas(f"""
         select procedimento as nome, count(*) as n, avg(valor_total) as valor_medio, avg(dias_permanencia) as permanencia
-        from base {where} group by 1 order by 2 desc limit 10""", params)
+        from base {where} group by 1 order by 2 desc, 1 limit 10""", params)
     piramide = linhas(f"""
         select faixa_etaria as faixa, sexo, count(*) as n
         from base {where} {'and' if where else 'where'} sexo in ('Masculino', 'Feminino')
         group by 1, 2 order by 1, 2""", params)
     leitos = linhas(f"""
         select especialidade_leito as nome, count(*) as n
-        from base {where} group by 1 order by 2 desc limit 6""", params)
+        from base {where} group by 1 order by 2 desc, 1 limit 6""", params)
     return dict(kpis=kpis, mensal=mensal, capitulos=capitulos, procedimentos=procedimentos, piramide=piramide, leitos=leitos)
 
 
@@ -78,17 +78,17 @@ hospitais = linhas(f"""
            avg(f.dias_permanencia) as permanencia_media, 100.0 * avg(f.obito::int) as mortalidade,
            100.0 * avg(f.usou_uti::int) as uti
     from fato_internacao f left join dim_estabelecimento e using (cnes)
-    group by all order by internacoes desc limit {TOP_HOSPITAIS}""")
+    group by all order by internacoes desc, f.cnes limit {TOP_HOSPITAIS}""")
 
 fluxo = linhas("""
     select municipio_residencia as origem, municipio_internacao as destino, count(*) as n
     from base where internado_fora_do_municipio and municipio_residencia is not null
-    group by 1, 2 order by 3 desc limit 12""")
+    group by 1, 2 order by 3 desc, 1, 2 limit 12""")
 
 destinos = linhas("""
     select municipio_internacao as nome, count(*) as n,
            100.0 * avg(internado_fora_do_municipio::int) as de_fora
-    from base group by 1 order by 2 desc limit 8""")
+    from base group by 1 order by 2 desc, 1 limit 8""")
 
 ano = con.sql("select max(year(competencia)) from fato_internacao").fetchone()[0]
 total_hospitais = con.sql("select count(distinct cnes) from fato_internacao").fetchone()[0]

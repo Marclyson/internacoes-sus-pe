@@ -13,7 +13,18 @@ from pyspark.sql import SparkSession, Window
 from pyspark.sql import functions as F
 
 DADOS = os.environ.get("DADOS", "dados")
-UF_IBGE = {"PE": 26}.get(os.environ.get("UF", "PE").upper(), 26)
+ANO = os.environ.get("ANO", "2024")
+UF = os.environ.get("UF", "PE").upper()
+# Código de cada UF no IBGE, usado para filtrar o CNES
+CODIGOS_UF = {
+    "RO": 11, "AC": 12, "AM": 13, "RR": 14, "PA": 15, "AP": 16, "TO": 17,
+    "MA": 21, "PI": 22, "CE": 23, "RN": 24, "PB": 25, "PE": 26, "AL": 27, "SE": 28, "BA": 29,
+    "MG": 31, "ES": 32, "RJ": 33, "SP": 35, "PR": 41, "SC": 42, "RS": 43,
+    "MS": 50, "MT": 51, "GO": 52, "DF": 53,
+}
+if UF not in CODIGOS_UF:
+    raise SystemExit(f"UF desconhecida: {UF}")
+UF_IBGE = CODIGOS_UF[UF]
 BRONZE = f"{DADOS}/bronze"
 SILVER = f"{DADOS}/silver"
 
@@ -46,7 +57,8 @@ def inteiro(col):
 
 
 # ---------------------------------------------------------------- internações
-rd = spark.read.parquet(f"{BRONZE}/sih_rd")
+# Só os arquivos do ano e da UF desta execução: a bronze pode guardar outros de execuções anteriores
+rd = spark.read.parquet(f"{BRONZE}/sih_rd/RD{UF}{ANO[2:]}*.parquet")
 
 internacoes = rd.select(
     texto("N_AIH").alias("n_aih"),
@@ -129,16 +141,16 @@ def ler_csv(caminho, **opcoes):
 
 
 proc = largura_fixa(
-    f"{BRONZE}/sigtap/tb_procedimento.txt",
+    f"{BRONZE}/sigtap/{ANO}/tb_procedimento.txt",
     [("cod_procedimento", 1, 10), ("procedimento", 11, 250), ("tp_complexidade", 261, 1),
      ("qt_dias_permanencia", 267, 4), ("vl_sh", 283, 10), ("vl_sp", 303, 10)],
 )
-grupo = largura_fixa(f"{BRONZE}/sigtap/tb_grupo.txt", [("co_grupo", 1, 2), ("grupo", 3, 100)])
+grupo = largura_fixa(f"{BRONZE}/sigtap/{ANO}/tb_grupo.txt", [("co_grupo", 1, 2), ("grupo", 3, 100)])
 subgrupo = largura_fixa(
-    f"{BRONZE}/sigtap/tb_sub_grupo.txt", [("co_grupo", 1, 2), ("co_sub_grupo", 3, 2), ("subgrupo", 5, 100)]
+    f"{BRONZE}/sigtap/{ANO}/tb_sub_grupo.txt", [("co_grupo", 1, 2), ("co_sub_grupo", 3, 2), ("subgrupo", 5, 100)]
 )
 forma = largura_fixa(
-    f"{BRONZE}/sigtap/tb_forma_organizacao.txt",
+    f"{BRONZE}/sigtap/{ANO}/tb_forma_organizacao.txt",
     [("co_grupo", 1, 2), ("co_sub_grupo", 3, 2), ("co_forma", 5, 2), ("forma_organizacao", 7, 100)],
 )
 

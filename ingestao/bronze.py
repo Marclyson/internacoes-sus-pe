@@ -5,6 +5,7 @@
 - IBGE: o JSON da API é copiado
 """
 import io
+import os
 import shutil
 import struct
 import tempfile
@@ -16,6 +17,8 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import numpy as np
 
+ANO = os.environ.get("ANO", "2024")
+UF = os.environ.get("UF", "PE").upper()
 RAW = Path("dados/raw")
 BRONZE = Path("dados/bronze")
 
@@ -53,7 +56,8 @@ def sih_para_parquet():
     destino = BRONZE / "sih_rd"
     destino.mkdir(parents=True, exist_ok=True)
     total = 0
-    for dbc in sorted((RAW / "sih").glob("RD*.dbc")):
+    # Só os arquivos do ano e da UF desta execução; outros que estejam na raw ficam de fora
+    for dbc in sorted((RAW / "sih").glob(f"RD{UF}{ANO[2:]}*.dbc")):
         saida = destino / f"{dbc.stem}.parquet"
         if saida.exists():
             print(f"  já existe: {saida}")
@@ -91,7 +95,8 @@ def main():
     print("SIH/SUS RD")
     sih_para_parquet()
     print("SIGTAP")
-    extrair(next((RAW / "sigtap").glob("*.zip")), ARQUIVOS_SIGTAP, BRONZE / "sigtap")
+    sigtap = sorted((RAW / "sigtap").glob(f"TabelaUnificada_{ANO}*.zip"))[-1]
+    extrair(sigtap, ARQUIVOS_SIGTAP, BRONZE / "sigtap" / ANO)
     print("CID-10")
     extrair(RAW / "cid10" / "CID10CSV.zip", ARQUIVOS_CID, BRONZE / "cid10")
     print("CNES")

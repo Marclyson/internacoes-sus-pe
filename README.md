@@ -48,15 +48,19 @@ docker compose run --rm pipeline
 O primeiro comando monta a imagem e o segundo roda as cinco etapas em sequência
 ([pipeline.sh](pipeline.sh)). Ao final, abra `dados/painel/index.html` no navegador.
 
-O ano vem da variável `ANO` (padrão 2024):
+O ano e o estado vêm das variáveis `ANO` (padrão 2024) e `UF` (padrão PE):
 
 ```bash
 ANO=2023 docker compose run --rm pipeline
+UF=PB docker compose run --rm pipeline
 ```
 
-Com os arquivos já baixados, o pipeline inteiro leva cerca de um minuto. A variável `UF` já
-existe, mas o código do IBGE de cada estado ainda precisa entrar no dicionário `UF_IBGE` de
-[spark/silver.py](spark/silver.py); hoje só Pernambuco está lá.
+Cada execução usa só os arquivos do ano e do estado pedidos. Os de execuções anteriores continuam
+em `dados/raw` e `dados/bronze` e são reaproveitados quando você voltar a eles. A silver, a gold e o
+painel são refeitos para o recorte atual. O título do painel traz o nome do estado só para
+Pernambuco; nos outros aparece a sigla.
+
+Com os arquivos já baixados, o pipeline inteiro leva cerca de um minuto.
 
 Para rodar só uma parte, por exemplo o dbt:
 
@@ -106,8 +110,10 @@ São 25 testes no `dbt build`:
   - nenhum valor pago é negativo;
   - o total de internações da gold bate com o da silver.
 
-O teste de relacionamento com o diagnóstico é só um aviso. O SIH usa o código N18.5, que não
-existe na tabela da CID-10 de 2008 que o DATASUS publica.
+Dois testes de relacionamento são só avisos. O SIH usa o código N18.5, que não existe na tabela da
+CID-10 de 2008 que o DATASUS publica. E o SIGTAP usado é o de dezembro do ano, onde faltam alguns
+procedimentos cobrados em meses anteriores: em 2024 nenhum, em 2023 quatro códigos, somando 32
+internações. As internações continuam no fato, sem o nome do procedimento.
 
 ## Decisões e aprendizados
 

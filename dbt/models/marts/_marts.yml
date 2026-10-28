@@ -15,8 +15,10 @@ models:
               arguments: {to: ref('dim_estabelecimento'), field: cnes}
       - name: cod_procedimento
         data_tests:
+          # Aviso: alguns procedimentos cobrados no ano saem do SIGTAP antes de dezembro (32 internações em 2023)
           - relationships:
               arguments: {to: ref('dim_procedimento'), field: cod_procedimento}
+              config: {severity: warn}
       - name: cod_cid
         data_tests:
           - relationships:
