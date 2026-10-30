@@ -99,7 +99,17 @@ consultar o arquivo sozinho, sem as dimensões. No DuckDB:
 select count(*) from 'internacoes-recife-2024-03.csv' where usou_uti;
 ```
 
-O arquivo sai da gold pelo [amostras/gerar.py](amostras/gerar.py). Depois de rodar o pipeline de
+Para praticar joins, há as mesmas internações com os códigos no lugar dos nomes e duas tabelas de
+apoio, só com os códigos que aparecem nelas:
+
+- [internacoes-codigos-recife-2024-03.csv](amostras/internacoes-codigos-recife-2024-03.csv): `cnes`
+  e `cod_cid` no lugar de `hospital` e `capitulo_cid`;
+- [hospitais-recife-2024-03.csv](amostras/hospitais-recife-2024-03.csv): CNES, nome e município dos
+  59 hospitais;
+- [diagnosticos-recife-2024-03.csv](amostras/diagnosticos-recife-2024-03.csv): código CID,
+  diagnóstico, categoria e capítulo dos 1.476 códigos.
+
+Os arquivos saem da gold pelo [amostras/gerar.py](amostras/gerar.py). Depois de rodar o pipeline de
 2024 para PE:
 
 ```bash
