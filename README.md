@@ -82,8 +82,33 @@ dbt/                    modelo dimensional e testes (gold)
   models/marts/         fato, dimensões e mart mensal, gravados como Parquet
   tests/                testes de regra de negócio
 painel/                 gerador do painel (gerar.py, template, CSS e JS)
+amostras/               amostra em CSV para estudo e o script que a gera
 pipeline.sh             as cinco etapas em sequência
 ```
+
+## Amostra para estudo
+
+A pasta `amostras/` tem um CSV pequeno para quem está aprendendo SQL e não quer rodar o pipeline:
+[internacoes-recife-2024-03.csv](amostras/internacoes-recife-2024-03.csv), com as 9.786 internações
+de moradores do Recife na competência de março de 2024 (1,4 MB). Cada linha é uma internação, com
+datas, sexo, idade, hospital, capítulo da CID, caráter do atendimento, dias de permanência, uso de
+UTI, óbito e valor pago. Os nomes do hospital e do capítulo já vêm resolvidos, então dá para
+consultar o arquivo sozinho, sem as dimensões. No DuckDB:
+
+```sql
+select count(*) from 'internacoes-recife-2024-03.csv' where usou_uti;
+```
+
+O arquivo sai da gold pelo [amostras/gerar.py](amostras/gerar.py). Depois de rodar o pipeline de
+2024 para PE:
+
+```bash
+docker compose run --rm pipeline python amostras/gerar.py
+```
+
+Outra competência vai como argumento (`python amostras/gerar.py 2024-05`). A amostra é usada nos
+exercícios da trilha de estudo da Dome Analytics, e as respostas dos exercícios saem dela. Por isso o
+arquivo fica no repositório e só muda quando os exercícios forem revistos.
 
 ## Modelo da camada gold
 
