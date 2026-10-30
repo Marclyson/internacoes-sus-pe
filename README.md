@@ -20,7 +20,7 @@ públicos. Não tem relação com o Ministério da Saúde nem com os hospitais q
 |---|---|---|---|
 | Raw | Python | Baixa as cinco fontes. Arquivo que já existe não é baixado de novo. | `dados/raw` |
 | Bronze | Python, NumPy, PyArrow | Descomprime os `.dbc`, lê o DBF e grava Parquet com todas as colunas em texto. Converte os arquivos de referência de Latin-1 para UTF-8. | `dados/bronze` |
-| Silver | Apache Spark (modo local) | Tipos, datas e valores corretos, idade em anos, faixa etária, remoção das reapresentações e tabelas de referência limpas. | `dados/silver` (Parquet particionado por competência) |
+| Silver | Apache Spark (modo local) | Tipos, datas e valores corretos, idade em anos, faixa etária, remoção das linhas repetidas de cada AIH e tabelas de referência limpas. | `dados/silver` (Parquet particionado por competência) |
 | Gold | dbt com DuckDB | Modelo dimensional: fato de internações, cinco dimensões e um mart mensal por hospital, com testes. | `dados/gold` (Parquet) |
 | Painel | DuckDB e HTML, CSS e JavaScript | Agrega a gold e gera um único HTML com os dados embutidos. | `dados/painel/index.html` |
 
@@ -161,8 +161,9 @@ descompressão leva menos de 1 segundo. A camada bronze inteira caiu de mais de 
 uma matriz de bytes e cada campo é uma fatia de colunas. Assim o arquivo é lido de uma vez, sem
 percorrer registro por registro em Python.
 
-**Reapresentações.** A mesma AIH pode voltar em meses seguintes quando o hospital reapresenta a
-conta. A silver fica só com a competência mais recente de cada AIH e remove 1.714 linhas.
+**AIH repetida.** A AIH de longa permanência (tipo 5) é paga mês a mês e volta em cada competência
+com o mesmo número. A silver fica só com a competência mais recente de cada AIH e remove 1.714
+linhas, todas de AIH tipo 5. A AIH tipo 1 não se repete entre competências.
 
 **AIH tipo 1.** O fato considera só a AIH principal. A AIH tipo 5 continua uma internação de longa
 permanência e contaria a mesma internação duas vezes.
@@ -179,7 +180,7 @@ hospitais com mais internações têm recorte próprio, escolhido no filtro ou c
 | Indicador | Valor |
 |---|---|
 | Linhas lidas dos arquivos do SIH | 669.715 |
-| AIH únicas depois de remover reapresentações | 668.001 |
+| AIH únicas depois de remover as repetidas | 668.001 |
 | Internações no fato (AIH tipo 1) | 666.262 |
 | Hospitais | 254 |
 | Valor pago pelo SUS | R$ 1,12 bilhão |

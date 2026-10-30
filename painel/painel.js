@@ -263,7 +263,7 @@ function render() {
 }
 
 document.getElementById("fonte").textContent =
-  `Fonte: SIH/SUS (AIH reduzida), SIGTAP, CID-10, CNES e IBGE, todos públicos. Somente AIH do tipo normal, sem reapresentações. Painel gerado em ${D.gerado_em}.`;
+  `Fonte: SIH/SUS (AIH reduzida), SIGTAP, CID-10, CNES e IBGE, todos públicos. Somente AIH do tipo normal, sem as de longa permanência. Painel gerado em ${D.gerado_em}.`;
 // Link direto para um hospital: index.html#hospital=<CNES>
 const doLink = /hospital=(\d{7})/.exec(location.hash);
 if (doLink && D.recortes[doLink[1]]) { estado.cnes = doLink[1]; select.value = doLink[1]; }

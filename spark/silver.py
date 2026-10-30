@@ -110,7 +110,7 @@ internacoes = internacoes.withColumn(
     .otherwise("75 anos ou mais"),
 )
 
-# A mesma AIH pode aparecer de novo em meses seguintes (reapresentação). Fica a última competência.
+# A AIH de longa permanência (tipo 5) volta em cada competência com o mesmo número. Fica a última competência.
 ultima = Window.partitionBy("n_aih", "tipo_aih").orderBy(F.col("ano_cmpt").desc(), F.col("mes_cmpt").desc())
 antes = internacoes.count()
 internacoes = (
@@ -126,7 +126,7 @@ depois = internacoes.count()
     .partitionBy("ano_cmpt", "mes_cmpt")
     .parquet(f"{SILVER}/internacoes")
 )
-print(f"internacoes: {antes:,} lidas, {depois:,} gravadas ({antes - depois:,} reapresentações removidas)")
+print(f"internacoes: {antes:,} lidas, {depois:,} gravadas ({antes - depois:,} linhas repetidas removidas)")
 
 
 # ---------------------------------------------------------------- SIGTAP

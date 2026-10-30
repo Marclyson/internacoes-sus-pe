@@ -7,7 +7,7 @@ sources:
       external_location: "../dados/silver/{name}/**/*.parquet"
     tables:
       - name: internacoes
-        description: Uma linha por AIH do SIH/SUS, já sem reapresentações
+        description: Uma linha por AIH do SIH/SUS, já sem as linhas repetidas entre competências
       - name: procedimentos
         description: Tabela de procedimentos do SUS (SIGTAP)
       - name: diagnosticos
