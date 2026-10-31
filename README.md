@@ -83,6 +83,7 @@ dbt/                    modelo dimensional e testes (gold)
   tests/                testes de regra de negócio
 painel/                 gerador do painel (gerar.py, template, CSS e JS)
 amostras/               amostra em CSV para estudo e o script que a gera
+trilha/                 código esperado ao fim de cada módulo da trilha de estudo
 pipeline.sh             as cinco etapas em sequência
 ```
 
@@ -119,6 +120,13 @@ docker compose run --rm pipeline python amostras/gerar.py
 Outra competência vai como argumento (`python amostras/gerar.py 2024-05`). A amostra é usada nos
 exercícios da trilha de estudo da Dome Analytics, e as respostas dos exercícios saem dela. Por isso o
 arquivo fica no repositório e só muda quando os exercícios forem revistos.
+
+## Marcos da trilha
+
+A pasta `trilha/` tem o código esperado ao fim de cada módulo da trilha de estudo, e cada etapa tem
+uma tag do Git com o mesmo nome. Hoje existe a [trilha/etapa-3-python](trilha/etapa-3-python/), com o
+script do Módulo 3 que baixa as tabelas de referência. Para ver o repositório como estava no marco,
+use `git checkout etapa-3-python`.
 
 ## Modelo da camada gold
 
