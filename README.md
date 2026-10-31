@@ -124,10 +124,17 @@ arquivo fica no repositório e só muda quando os exercícios forem revistos.
 ## Marcos da trilha
 
 A pasta `trilha/` tem o código esperado ao fim de cada módulo da trilha de estudo, e cada etapa tem
-uma tag do Git com o mesmo nome. Hoje existem a [trilha/etapa-3-python](trilha/etapa-3-python/), com o
-script do Módulo 3 que baixa as tabelas de referência, e a [trilha/etapa-4-docker](trilha/etapa-4-docker/),
-com o Dockerfile e o `docker-compose.yml` do Módulo 4, que rodam esse script num contêiner. Para ver o
-repositório como estava num marco, use `git checkout` com o nome dele, como `git checkout etapa-4-docker`.
+uma tag do Git com o mesmo nome. Hoje existem três:
+
+- [trilha/etapa-3-python](trilha/etapa-3-python/): o script do Módulo 3 que baixa as tabelas de
+  referência.
+- [trilha/etapa-4-docker](trilha/etapa-4-docker/): o Dockerfile e o `docker-compose.yml` do Módulo 4,
+  que rodam esse script num contêiner.
+- [trilha/etapa-5-bronze](trilha/etapa-5-bronze/): o `baixar.py` e o `bronze.py` do Módulo 5, que
+  baixam o RD de um ano e gravam a camada bronze.
+
+Para ver o repositório como estava num marco, use `git checkout` com o nome dele, como
+`git checkout etapa-5-bronze`.
 
 ## Modelo da camada gold
 
