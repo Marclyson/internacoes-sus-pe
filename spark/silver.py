@@ -110,8 +110,11 @@ internacoes = internacoes.withColumn(
     .otherwise("75 anos ou mais"),
 )
 
-# A AIH de longa permanência (tipo 5) volta em cada competência com o mesmo número. Fica a última competência.
-ultima = Window.partitionBy("n_aih", "tipo_aih").orderBy(F.col("ano_cmpt").desc(), F.col("mes_cmpt").desc())
+# A AIH de longa permanência (tipo 5) volta em cada competência com o mesmo número. Fica a última competência;
+# quando duas contas da mesma AIH caem na mesma competência, a data de saída mais recente desempata.
+ultima = Window.partitionBy("n_aih", "tipo_aih").orderBy(
+    F.col("ano_cmpt").desc(), F.col("mes_cmpt").desc(), F.col("dt_saida").desc()
+)
 antes = internacoes.count()
 internacoes = (
     internacoes.withColumn("_ordem", F.row_number().over(ultima))

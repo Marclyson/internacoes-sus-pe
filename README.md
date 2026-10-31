@@ -179,7 +179,8 @@ percorrer registro por registro em Python.
 
 **AIH repetida.** A AIH de longa permanência (tipo 5) é paga mês a mês e volta em cada competência
 com o mesmo número. A silver fica só com a competência mais recente de cada AIH e remove 1.714
-linhas, todas de AIH tipo 5. A AIH tipo 1 não se repete entre competências.
+linhas, todas de AIH tipo 5. A AIH tipo 1 não se repete entre competências. Em 16 AIH, duas contas
+caem na mesma competência, e fica a de data de saída mais recente.
 
 **AIH tipo 1.** O fato considera só a AIH principal. A AIH tipo 5 continua uma internação de longa
 permanência e contaria a mesma internação duas vezes.
