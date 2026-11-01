@@ -1,0 +1,4 @@
+# O que fica fora da imagem
+.venv/
+dados/
+internacoes-sus-pe/
