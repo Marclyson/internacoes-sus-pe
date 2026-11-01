@@ -1,8 +1,8 @@
 dados/
-dbt/target/
-dbt/logs/
-dbt/dbt_packages/
+**/dbt/target/
+**/dbt/logs/
+**/dbt/dbt_packages/
 __pycache__/
 *.pyc
 .env
-dbt/.user.yml
+**/dbt/.user.yml

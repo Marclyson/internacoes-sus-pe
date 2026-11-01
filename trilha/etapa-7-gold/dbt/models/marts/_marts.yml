@@ -1,0 +1,93 @@
+version: 2
+
+models:
+  - name: fato_internacao
+    description: Uma linha por internação (AIH principal) aprovada no SIH/SUS
+    columns:
+      - name: n_aih
+        description: Número da AIH, a autorização de internação
+        data_tests: [unique, not_null]
+      - name: competencia
+        description: Mês em que o hospital apresentou a conta, no dia 1 do mês
+        data_tests: [not_null]
+      - name: cnes
+        description: Código do hospital no CNES
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_estabelecimento'), field: cnes}
+      - name: cod_procedimento
+        data_tests:
+          # Aviso: alguns procedimentos cobrados no ano saem do SIGTAP antes de dezembro (32 internações em 2023)
+          - relationships:
+              arguments: {to: ref('dim_procedimento'), field: cod_procedimento}
+              config: {severity: warn}
+      - name: cod_cid
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_diagnostico'), field: cod_cid}
+              config: {severity: warn}
+      - name: cod_municipio_residencia
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_municipio'), field: cod_municipio}
+      - name: tipo_entrada
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['Eletiva', 'Urgência']}
+      - name: especialidade_leito
+        data_tests: [not_null]
+      - name: dt_internacao
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_tempo'), field: data}
+
+  - name: dim_estabelecimento
+    description: Estabelecimentos de saúde de Pernambuco no CNES
+    columns:
+      - name: cnes
+        data_tests: [unique, not_null]
+  - name: dim_procedimento
+    description: Procedimentos do SIGTAP, com o grupo e os valores de tabela
+    columns:
+      - name: cod_procedimento
+        data_tests: [unique, not_null]
+  - name: dim_diagnostico
+    description: Diagnósticos da CID-10, com o capítulo e o grupo
+    columns:
+      - name: cod_cid
+        data_tests: [unique, not_null]
+  - name: dim_municipio
+    description: Municípios do IBGE, usados na residência do paciente e no hospital
+    columns:
+      - name: cod_municipio
+        data_tests: [unique, not_null]
+  - name: dim_tempo
+    description: Um dia por linha, de janeiro do primeiro ano a dezembro do último
+    columns:
+      - name: data
+        data_tests: [unique, not_null]
+  - name: mart_indicadores_mensais
+    description: Uma linha por mês e hospital, com os indicadores das páginas de visão geral do painel
+    columns:
+      - name: competencia
+        description: Mês da competência, no dia 1 do mês
+      - name: cnes
+        description: Código do hospital no CNES
+      - name: internacoes
+        description: Número de internações
+        data_tests: [not_null]
+      - name: obitos
+        description: Internações que terminaram em óbito
+      - name: taxa_mortalidade_pct
+        description: Óbitos por 100 internações. Para juntar meses ou hospitais, divida a soma dos óbitos pela soma das internações
+      - name: permanencia_media_dias
+        description: Média dos dias de internação
+      - name: internacoes_com_uti
+        description: Internações com pelo menos um dia de UTI
+      - name: valor_total
+        description: Valor pago pelo SUS, em reais
+      - name: valor_medio
+        description: Valor pago por internação, em reais
+      - name: internacoes_urgencia
+        description: Internações com entrada de urgência

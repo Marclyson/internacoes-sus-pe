@@ -1,0 +1,7 @@
+codigo,carater_atendimento,tipo_entrada
+01,Eletivo,Eletiva
+02,Urgência,Urgência
+03,Acidente no local de trabalho ou a serviço da empresa,Urgência
+04,Acidente no trajeto para o trabalho,Urgência
+05,Outros tipos de acidente de trânsito,Urgência
+06,Outras lesões e envenenamentos por agentes químicos ou físicos,Urgência

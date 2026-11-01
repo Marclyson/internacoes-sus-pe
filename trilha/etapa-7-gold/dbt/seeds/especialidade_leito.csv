@@ -1,0 +1,16 @@
+codigo,especialidade_leito
+01,Cirúrgico
+02,Obstétrico
+03,Clínico
+04,Crônico
+05,Psiquiatria
+06,Pneumologia sanitária (tisiologia)
+07,Pediátrico
+08,Reabilitação
+09,Leito-dia cirúrgico
+10,Leito-dia Aids
+11,Leito-dia fibrose cística
+12,Leito-dia intercorrência pós-transplante
+13,Leito-dia geriatria
+14,Leito-dia saúde mental
+87,Saúde mental (clínico)
