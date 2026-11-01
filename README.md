@@ -185,6 +185,11 @@ caem na mesma competência, e fica a de data de saída mais recente.
 **AIH tipo 1.** O fato considera só a AIH principal. A AIH tipo 5 continua uma internação de longa
 permanência e contaria a mesma internação duas vezes.
 
+**Grupos da CID-10 encaixados.** Na tabela de grupos da CID-10, um grupo pode conter outros: C00-C97
+contém C00-C75, que contém C15-C26. Ligando cada categoria aos grupos pela faixa de códigos, 455
+categorias caem em mais de um grupo. A silver fica com o mais específico, o de faixa mais estreita: o
+C22, por exemplo, fica em "Neoplasias malignas dos órgãos digestivos".
+
 **Texto em Latin-1.** Os arquivos do DATASUS vêm em Latin-1. A conversão para UTF-8 acontece na
 bronze, assim o Spark e o dbt leem tudo sem tratar codificação.
 

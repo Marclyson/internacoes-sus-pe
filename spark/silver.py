@@ -192,16 +192,22 @@ capitulos = ler_csv(f"{BRONZE}/cid10/CID-10-CAPITULOS.CSV", **cid_opts).select(
     F.regexp_replace("DESCRICAO", r"^Cap\S*\s+[IVXL]+\s*-\s*", "").alias("capitulo"),
 )
 
-# O SIH usa a subcategoria (4 caracteres) ou só a categoria (3). As categorias entram como linha própria.
-cid = subcat.unionByName(categ.select(F.col("cod_categoria").alias("cod_cid"), F.col("categoria").alias("diagnostico")))
+# O SIH usa a subcategoria (4 caracteres) ou só a categoria (3). As categorias entram como linha própria,
+# menos as que já aparecem na tabela de subcategorias com o mesmo código de 3 caracteres.
+so_categoria = categ.join(subcat, F.col("cod_categoria") == F.col("cod_cid"), "left_anti")
+cid = subcat.unionByName(so_categoria.select(F.col("cod_categoria").alias("cod_cid"), F.col("categoria").alias("diagnostico")))
+# Os grupos da CID-10 se encaixam uns nos outros (C00-C97 contém C15-C26). Fica o mais específico:
+# o de início mais alto e, no empate, o de fim mais baixo.
+mais_especifico = Window.partitionBy("cod_cid").orderBy(F.col("g_ini").desc(), F.col("g_fim"))
 cid = (
     cid.withColumn("cod_categoria", F.substring("cod_cid", 1, 3))
     .join(categ, "cod_categoria", "left")
     .join(F.broadcast(grupos), F.col("cod_categoria").between(F.col("g_ini"), F.col("g_fim")), "left")
     .join(F.broadcast(capitulos), F.col("cod_categoria").between(F.col("c_ini"), F.col("c_fim")), "left")
+    .withColumn("_ordem", F.row_number().over(mais_especifico))
+    .filter(F.col("_ordem") == 1)
     .withColumn("capitulo", F.regexp_replace("capitulo", r"\s+", " "))
-    .drop("g_ini", "g_fim", "c_ini", "c_fim")
-    .dropDuplicates(["cod_cid"])
+    .drop("g_ini", "g_fim", "c_ini", "c_fim", "_ordem")
 )
 cid.write.mode("overwrite").parquet(f"{SILVER}/diagnosticos")
 print(f"diagnosticos: {cid.count():,}")
