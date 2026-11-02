@@ -22,8 +22,9 @@ docker compose run --rm referencias python bronze.py
 docker compose run --rm referencias python silver.py
 ```
 
-O `silver.py` grava cerca de 20 MB em `dados/silver`, em cinco tabelas: 668.001 internações,
-4.844 procedimentos, 14.233 diagnósticos, 5.571 municípios e 16.338 estabelecimentos de Pernambuco.
+O `silver.py` grava cerca de 20 MB em `dados/silver`, em cinco tabelas: 668.001 linhas de
+internações, uma por AIH e tipo, 4.844 procedimentos, 14.233 diagnósticos, 5.571 municípios e 16.338
+estabelecimentos de Pernambuco.
 Ele dá 4 GB de memória ao Spark, como o `spark/silver.py` do projeto. Rodando de novo, ele grava a
 silver por cima. Para outra UF ou outro ano, passe o mesmo `-e` nos três scripts, como em
 `docker compose run --rm -e UF=PB referencias python silver.py`.

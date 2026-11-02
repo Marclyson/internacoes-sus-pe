@@ -208,7 +208,7 @@ hospitais com mais internações têm recorte próprio, escolhido no filtro ou c
 | Indicador | Valor |
 |---|---|
 | Linhas lidas dos arquivos do SIH | 669.715 |
-| AIH únicas depois de remover as repetidas | 668.001 |
+| Linhas da silver, uma por AIH e tipo | 668.001 |
 | Internações no fato (AIH tipo 1) | 666.262 |
 | Hospitais | 254 |
 | Valor pago pelo SUS | R$ 1,12 bilhão |
