@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internações do SUS em Pernambuco</title>
+<meta name="description" content="Painel das internações hospitalares do SUS em Pernambuco, feito com dados públicos do DATASUS. Projeto de estudo da Dome Analytics.">
+<style>/*CSS*/</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo-faixa">
+    <img class="logo" src="data:image/webp;base64,/*LOGO*/" alt="Dome Analytics" width="150" height="38">
+    <span class="selo">Projeto de estudo · dados públicos</span>
+  </div>
+  <div class="topo-titulo">
+    <div>
+      <h1 id="titulo">Internações do SUS em Pernambuco</h1>
+      <p class="sub" id="subtitulo"></p>
+    </div>
+    <label class="filtro">
+      <span>Hospital</span>
+      <select id="hospital"></select>
+    </label>
+  </div>
+</header>
+
+<main>
+  <section class="kpis" id="kpis" aria-label="Indicadores principais"></section>
+
+  <section class="grade">
+    <article class="cartao largo">
+      <div class="cartao-topo">
+        <h2>Mês a mês</h2>
+        <div class="abas" id="abas-mensal" role="tablist"></div>
+      </div>
+      <div class="colunas" id="mensal"></div>
+    </article>
+
+    <article class="cartao">
+      <h2>Diagnóstico principal por capítulo da CID-10</h2>
+      <p class="nota">As 10 causas mais frequentes, com a mortalidade de cada uma.</p>
+      <div id="capitulos"></div>
+    </article>
+
+    <article class="cartao">
+      <h2>Faixa etária e sexo</h2>
+      <p class="nota">Número de internações em cada faixa.</p>
+      <div id="piramide"></div>
+    </article>
+
+    <article class="cartao largo">
+      <h2>Procedimentos mais realizados</h2>
+      <div class="tabela-rolagem"><table class="tabela" id="procedimentos"></table></div>
+    </article>
+
+    <article class="cartao">
+      <h2>Especialidade do leito</h2>
+      <div id="leitos"></div>
+    </article>
+
+    <article class="cartao">
+      <h2>Para onde os pacientes vão</h2>
+      <p class="nota">Municípios que mais recebem internações e a parte que vem de outras cidades. Vale para todo o estado.</p>
+      <div id="destinos"></div>
+    </article>
+
+    <article class="cartao largo">
+      <div class="cartao-topo">
+        <h2>Hospitais com mais internações</h2>
+        <p class="nota sem-margem">Clique numa linha para ver só aquele hospital.</p>
+      </div>
+      <div class="tabela-rolagem"><table class="tabela clicavel" id="hospitais"></table></div>
+      <button type="button" class="botao" id="mais-hospitais"></button>
+      <p class="nota">A mortalidade depende do perfil de cada hospital (porte, UTI, casos graves) e não mede a qualidade do atendimento.</p>
+    </article>
+
+    <article class="cartao largo">
+      <h2>Maiores deslocamentos entre municípios</h2>
+      <p class="nota">Pares de cidade onde o paciente mora e cidade onde foi internado. Vale para todo o estado.</p>
+      <div class="fluxo" id="fluxo"></div>
+    </article>
+  </section>
+</main>
+
+<footer class="rodape">
+  <p id="fonte"></p>
+  <p>Pipeline: Python, Apache Spark e dbt com DuckDB, em Docker. Painel em HTML, CSS e JavaScript, sem bibliotecas.
+    <a href="https://projetos.domeanalytics.com.br/internacoes-sus-pernambuco/">Como o projeto foi feito</a> ·
+    <a href="https://github.com/Marclyson/internacoes-sus-pe">Código no GitHub</a>.</p>
+  <p>Este é um projeto de estudo da <a href="https://www.domeanalytics.com">Dome Analytics</a>, sem relação com o Ministério da Saúde ou com os hospitais citados.</p>
+</footer>
+
+<div class="dica" id="dica" role="tooltip" hidden></div>
+<script type="application/json" id="dados">/*DADOS*/</script>
+<script>/*JS*/</script>
+</body>
+</html>

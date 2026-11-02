@@ -1,0 +1,8 @@
+internacoes_sus:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: ../dados/gold/dw.duckdb
+      external_root: ../dados/gold
+      threads: 4

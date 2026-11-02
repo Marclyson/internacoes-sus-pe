@@ -1,0 +1,21 @@
+name: internacoes_sus
+version: "1.0.0"
+profile: internacoes_sus
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+models:
+  internacoes_sus:
+    staging:
+      +materialized: view
+    marts:
+      # As tabelas finais viram arquivos Parquet em dados/gold, prontos para o Power BI
+      +materialized: external
+      +format: parquet
+
+seeds:
+  internacoes_sus:
+    +column_types:
+      codigo: varchar

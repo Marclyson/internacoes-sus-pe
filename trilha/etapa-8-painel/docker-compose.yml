@@ -1,0 +1,9 @@
+services:
+  referencias:
+    build: .
+    image: estudos
+    volumes:
+      - .:/app
+    environment:
+      UF: "${UF:-PE}"
+      ANO: "${ANO:-2024}"

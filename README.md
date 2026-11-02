@@ -124,7 +124,7 @@ arquivo fica no repositório e só muda quando os exercícios forem revistos.
 ## Marcos da trilha
 
 A pasta `trilha/` tem o código esperado ao fim de cada módulo da trilha de estudo, e cada etapa tem
-uma tag do Git com o mesmo nome. Hoje existem cinco:
+uma tag do Git com o mesmo nome. São seis:
 
 - [trilha/etapa-3-python](trilha/etapa-3-python/): o script do Módulo 3 que baixa as tabelas de
   referência.
@@ -136,9 +136,11 @@ uma tag do Git com o mesmo nome. Hoje existem cinco:
   Spark e grava a camada silver.
 - [trilha/etapa-7-gold](trilha/etapa-7-gold/): o projeto dbt do Módulo 7, que lê a silver, testa o
   modelo e grava a camada gold em Parquet.
+- [trilha/etapa-8-painel](trilha/etapa-8-painel/): o painel e o `pipeline.sh` do Módulo 8, que roda
+  as cinco etapas com um comando, do download ao painel.
 
 Para ver o repositório como estava num marco, use `git checkout` com o nome dele, como
-`git checkout etapa-7-gold`.
+`git checkout etapa-8-painel`.
 
 ## Modelo da camada gold
 
